@@ -11,7 +11,7 @@
         "label": "Lab Test Unit Converter",
 
         // description: longer string to help end users understand what this plugin does
-        "description": "",
+        "description": "Converts patient lab tests into a standardized units for each lab test.",
 
         "author": "nietoa04",
 
