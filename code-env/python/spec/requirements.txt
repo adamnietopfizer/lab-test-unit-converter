@@ -1,2 +1,2 @@
-pubchempy
-pint
+PubChemPy==1.0.4
+Pint==0.11
