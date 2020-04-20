@@ -1,0 +1,121 @@
+// This file is the descriptor for the Custom code recipe lab-test-unit-converter
+{
+    // Meta data for display purposes
+    "meta": {
+        // label: name of the recipe as displayed, should be short
+        "label": "Converter",
+        // description: longer string to help end users understand what this recipe does
+        "description": "Converts a given dataset of lab tests to a majority unit for each given test.",
+        // icon: must be one of the FontAwesome 3.2.1 icons, complete list here at https://fontawesome.com/v3.2.1/icons/
+        "icon": "icon-refresh"
+    },
+
+    "kind": "PYTHON",
+    
+
+    // Inputs and outputs are defined by roles. In the recipe's I/O tab, the user can associate one
+    // or more dataset to each input and output role.
+
+    // The "arity" field indicates whether the user can associate several datasets to the role ('NARY')
+    // or at most one ('UNARY'). The "required" field indicates whether the user is allowed to
+    // associate no dataset with the role.
+
+    "inputRoles": [
+        {
+            "name": "lab_tests_dataset",
+            "label": "Lab Tests Dataset",
+            "description": "A dataset containing the lab test that need to be standardized and or converted.",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true
+        }
+    ],
+
+    "outputRoles": [
+        {
+            "name": "successful_conversion_output",
+            "label": "Dataset of Succcessful Conversions",
+            "description": "Contains all of the successfully converted lab tests.",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true
+        },
+        {
+            "name": "unsuccessful_conversion_output",
+            "label": "Dataset of Unsuccessful Conversions",
+            "description": "Contains all of the lab tests that we had trouble converting.",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true
+        }
+    ],
+
+    /* The field "params" holds a list of all the params
+       for wich the user will be prompted for values in the Settings tab of the recipe.
+
+       The available parameter types include:
+       STRING, STRINGS, INT, DOUBLE, BOOLEAN, SELECT, MULTISELECT, MAP, TEXTAREA, PRESET, COLUMN, COLUMNS
+
+       For the full list and for more details, see the documentation: https://doc.dataiku.com/dss/latest/plugins/reference/params.html
+    */
+
+    "params": [
+        {
+            "name": "lab_tests",
+            "label": "Lab Test Name Column",
+            "type": "COLUMN",
+            "columnRole": "lab_tests_dataset",
+            "description": "Label or name of the lab test",
+            "mandatory": true
+        },
+        {
+            "name": "lab_test_measurement_value",
+            "label": "Lab Test Measurement Value Column",
+            "type": "COLUMN",
+            "columnRole": "lab_tests_dataset",
+            "description": "Value of the lab test",
+            "mandatory": true
+        },
+        {
+            "name": "lab_test_original_unit",
+            "label": "Lab Test Original Unit Column",
+            "type": "COLUMN",
+            "columnRole": "lab_tests_dataset",
+            "description": "Original units of measurement of the lab test ('convert from' unit)",
+            "mandatory": true
+        },
+        {
+            "name": "preprocessing_needed",
+            "label":"Do you know the majority unit or 'convert to' unit for each test?",
+            "type": "SELECT",
+             "selectChoices": [
+                {
+                    "value": "True",
+                    "label": "Yes"
+                },
+                {
+                    "value": "False",
+                    "label": "No"
+                }
+            ]
+        },
+        {
+            "name": "lab_test_convert_to_unit",
+            "label": "Lab Test Majority Unit",
+            "type": "COLUMN",
+            "columnRole": "lab_tests_dataset",
+            "description": "Unit of measurement you want to convert to for each lab test",
+            "visibilityCondition":"model.preprocessing_needed == 'True'",
+            "mandatory": true
+        }
+    ],
+
+    // The field "resourceKeys" holds a list of keys that allows to limit the number
+    // of concurrent executions and activities triggered by this recipe.
+    //
+    // Administrators can configure the limit per resource key in the Administration > Settings > Flow build
+    // screen.
+
+    "resourceKeys": []
+
+}
